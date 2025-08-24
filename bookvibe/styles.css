@@ -1,0 +1,2046 @@
+/* Basic Reset & Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { /* Apply height 100% only to html */
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Cyan Spark Theme */
+    --color-primary-cyan: #00CFE8;
+    --color-accent1-pink: #E91E63;
+    --color-dark-text: #1A202C;
+    --color-light-bg: #F0F8FF; /* AliceBlue */
+    --color-white: #FFFFFF;
+    --color-grey-text: #4A5568;
+    --color-border: #E2E8F0;
+
+    --font-primary: 'Lato', sans-serif;
+    --font-headings: 'Merriweather', serif;
+
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --border-radius: 0.5rem; /* 8px */
+}
+
+body {
+    /* margin and padding are handled by the * reset */
+    font-family: var(--font-primary);
+    line-height: 1.7;
+    color: var(--color-dark-text);
+    background-color: var(--color-white);
+    /* overflow-x: hidden;  Prevent horizontal scroll from AOS  (Potentially causing issues with sticky header) */
+    display: flex; /* Make body a flex container */
+    flex-direction: column; /* Stack header, main, footer */
+    min-height: 100%; /* Ensure body is at least html's height and can grow with content */
+}
+
+main { /* Allow main to grow and fill space if footer is not sticky */
+    flex-grow: 1;
+}
+
+.container {
+    /* Using Bootstrap's container, but can add max-width if needed */
+    /* max-width: 1200px; */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-headings);
+    /* Default color removed, will be set per heading level for brand integration */
+    margin-bottom: 0.75em;
+    line-height: 1.3;
+}
+
+h1, h2 { /* Major section titles */
+    color: var(--color-primary-cyan);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+h3 { /* Sub-section/card titles */
+    color: var(--color-accent1-pink);
+}
+
+h4, h5, h6 { /* Lesser headings */
+    color: var(--color-dark-text);
+}
+
+h1 { font-size: 2.8rem; } /* Existing font size */
+h2 { font-size: 2.2rem; } /* Existing font size */
+h3 { font-size: 1.6rem; } /* Existing font size */
+
+p {
+    margin-bottom: 1rem;
+    color: var(--color-grey-text);
+}
+
+a {
+    color: var(--color-primary-cyan);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+a:hover {
+    color: #00a8bd; /* Darker cyan */
+}
+/* Standardized history.back() link hover/focus color and style */
+main div.mb-4 > a.text-muted[onclick*="history.back()"]:hover,
+main div.mb-4 > a.text-muted[onclick*="history.back()"]:focus {
+    color: var(--color-primary-cyan) !important; /* Cyan hover/focus color */
+    text-decoration: underline !important; /* Add underline */
+    text-decoration-color: var(--color-primary-cyan) !important; /* Ensure underline is also cyan */
+}
+
+
+/* Header & Navbar */
+.main-header {
+    /* background-color: var(--color-white); Old flat color */
+    background: linear-gradient(to bottom, var(--color-white) 0%, var(--color-light-bg) 100%); /* Subtle gradient */
+    box-shadow: var(--shadow-md);
+    position: sticky;   /* Make the header sticky */
+    top: 0;             /* Stick to the top of the viewport */
+    z-index: 1035;      /* Ensure header is above most other page content (Bootstrap navbar default is 1030) */
+}
+/* Add this to ensure the sticky header maintains its position */
+.main-header.header-scrolled {
+    top: 0; /* Explicitly set top to 0 when scrolled */
+}
+/* Fix the height of the navbar within the main header */
+.main-header .navbar {
+    height: 80px; /* Fixed height to prevent the header from increasing in size */
+    transition: height 0.3s ease; /* Add transition for smooth shrink */
+}
+/* Styles for the logo link */
+.main-header .logo { 
+    padding-top: 0.25rem; /* Reduced padding to prevent header enlargement */
+    padding-bottom: 0.25rem; /* Reduced padding to prevent header enlargement */
+    margin-right: 1rem; /* Ensure some space between logo and nav items */
+    transition: transform 0.3s ease, font-size 0.3s ease; /* Add font-size to transition */
+    display: inline-block; /* Ensures proper layout */
+    font-family: var(--font-headings); /* Apply heading font */
+    font-weight: 700;                 /* Apply bold weight */
+    font-size: 1.8rem;                /* Apply base size */
+    line-height: 1.2;                 /* Adjust line-height for better vertical centering in navbar */
+    vertical-align: middle;         /* Helps align with other navbar items */
+}
+/* Styles for the text parts of the logo */
+.main-header .logo .logo-book {
+    color: var(--color-primary-cyan); /* Cyan for "Book" */
+}
+/* Make the first letter of "Book" larger */
+.main-header .logo .logo-book::first-letter {
+    font-size: 2.2rem; /* Larger than the rest of "Book" and "Vibe" */
+    transition: font-size 0.3s ease; /* Add transition for smooth shrink */
+}
+/* Keyframes for the Vibe text animation */
+@keyframes vibeBreathe {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1); /* More noticeable pulse */
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+.main-header .logo .logo-vibe {
+    color: var(--color-accent1-pink);   /* Pink for "Vibe" */
+    display: inline-block; /* Needed for transform to work correctly */
+    font-size: 2.0rem; /* Increased font size for "Vibe" */
+    transition: font-size 0.3s ease; /* Add transition for smooth shrink */
+    animation: vibeBreathe 2.5s infinite ease-in-out; /* Apply the animation */
+}
+/* Styles for the image within the logo link */
+.main-header .logo img {
+    height: 70px;     /* Set specific height */
+    width: 70px;      /* Set specific width */
+    object-fit: contain; /* Ensures image fits without distortion */
+    vertical-align: middle; /* Align image nicely */
+}
+.main-header .logo:hover { /* Hover effect for the logo link */
+    transform: scale(1.05);
+}
+.navbar-nav .nav-link {
+    color: var(--color-dark-text);
+    font-weight: 500;
+    padding: 0.8rem 1rem;
+    transition: color 0.3s ease, background-color 0.3s ease, padding 0.3s ease; /* Add padding to transition */
+    border-radius: var(--border-radius);
+}
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: var(--color-accent1-pink); /* Text color for active and hovered links */
+}
+/* Profile icon specific styling */
+.navbar-nav .nav-link-profile-icon i.fa-user-circle {
+    font-size: 1.7rem; /* Increased size slightly */
+    vertical-align: middle;
+    color: var(--color-primary-cyan); /* Default color to cyan */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+.navbar-nav .nav-link-profile-icon:hover i.fa-user-circle {
+    color: var(--color-accent1-pink); /* Pink color on hover */
+}
+.main-header.header-scrolled {
+    top: 0; /* Explicitly set top to 0 when scrolled */
+}
+
+
+/* Scrolled Header State */
+.main-header.header-scrolled .navbar {
+    height: 60px; /* Shrunken height */
+}
+.main-header.header-scrolled .logo {
+    font-size: 1.5rem; /* Shrunken logo font size */
+}
+.main-header.header-scrolled .logo .logo-book::first-letter {
+    font-size: 1.8rem; /* Shrunken first letter */
+}
+.main-header.header-scrolled .logo .logo-vibe {
+    font-size: 1.7rem; /* Shrunken vibe text */
+}
+.main-header.header-scrolled .navbar-nav .nav-link {
+    padding: 0.5rem 1rem; /* Reduced vertical padding */
+}
+.navbar-nav .nav-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--color-primary-cyan);   /* Underline in cyan */
+    text-decoration-thickness: 2px;                     /* Makes the underline thicker */
+    text-underline-offset: 7px;                         /* Further increased space between text and underline */
+}
+
+/* General Bootstrap Primary Button Styling */
+.btn-primary {
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+    color: var(--color-white);
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #00a8bd; /* Darker cyan */
+    border-color: #00a8bd;
+    transform: translateY(-2px); /* Add hover animation */
+}
+
+/* Ensure primary buttons maintain theme color on click/focus */
+.btn-primary:active,
+.btn-primary:focus {
+    background-color: #00a8bd !important; /* Slightly darker cyan for active/focus */
+    border-color: #00a8bd !important;     /* Match border color */
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25) !important; /* Custom focus ring */
+}
+.navbar-toggler {
+    border-color: rgba(0,0,0,0.1);
+}
+
+/* Specific overrides for the "Surprise Me Again!" button to ensure theme colors */
+#surpriseMeAgainBtn {
+    /* No need to redefine base colors here if .btn-primary already sets them */
+    /* But adding it here ensures highest specificity if needed */
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+    color: var(--color-white);
+}
+
+#surpriseMeAgainBtn:hover {
+    background-color: #00a8bd; /* Darker cyan on hover */
+    border-color: #00a8bd;
+}
+
+#surpriseMeAgainBtn:active,
+#surpriseMeAgainBtn:focus {
+    background-color: #00a8bd !important; /* Darker cyan for active/focus */
+    border-color: #00a8bd !important;     /* Match border color */
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25) !important; /* Custom focus ring */
+}
+.navbar-toggler {
+    border-color: rgba(0,0,0,0.1);
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 207, 232, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+/* General Outline Primary Button Styling */
+.btn-outline-primary {
+    border-color: var(--color-primary-cyan);
+    color: var(--color-primary-cyan);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+.btn-outline-primary:hover {
+    background-color: var(--color-primary-cyan);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+.btn-outline-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25) !important; /* Custom focus ring */
+}
+
+/* Themed Secondary Button */
+.btn-outline-secondary {
+    border-color: var(--color-grey-text);
+    color: var(--color-grey-text);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+.btn-outline-secondary:hover {
+    background-color: var(--color-grey-text);
+    border-color: var(--color-grey-text);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+.btn-outline-secondary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(74, 85, 104, 0.25) !important; /* Custom focus ring for grey */
+}
+
+/* Themed Danger Button (using accent pink) */
+.btn-outline-danger {
+    border-color: var(--color-accent1-pink);
+    color: var(--color-accent1-pink);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+.btn-outline-danger:hover {
+    background-color: var(--color-accent1-pink);
+    border-color: var(--color-accent1-pink);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+.btn-outline-danger:focus {
+    box-shadow: 0 0 0 0.25rem rgba(233, 30, 99, 0.25) !important; /* Custom focus ring for pink */
+}
+
+/* Cart Indicator in Navbar */
+.navbar-nav .nav-link #cartItemCount {
+    font-size: 0.7em; /* Make badge slightly smaller relative to nav link text */
+    padding: 0.3em 0.5em; /* Adjust padding for a nice fit */
+    vertical-align: top; /* Align badge nicely with the text */
+    background-color: var(--color-accent1-pink) !important; /* Ensure pink color */
+}
+
+
+
+
+/* Hero Section */
+.hero { /* Adjusted to use more consistent gradient */
+    background-color: var(--color-light-bg); /* Ensure hero section has the light blue background */
+    /* min-height: 90vh; */ /* Changed to explicit height */
+    height: 90vh;         /* Use explicit height to ensure children can use 100% reliably */
+    width: 100%; /* Ensure hero itself is full width */
+    display: flex; /* Use flex to manage the carousel child */
+    flex-direction: column; /* Stack children (carousel) */
+    padding: 0; /* Remove padding to allow carousel to be full width */
+    position: relative; /* For positioning carousel controls if needed */
+    overflow: hidden; /* Ensures nothing spills out */
+}
+
+/* Hero Banner Carousel Styles  */
+.hero-banner-carousel {
+    height: 100%; /* Make the carousel fill the vertical space of the .hero flex container */
+    width: 100%;
+    display: flex; /* Ensure it's a flex container for .carousel-inner */
+    flex-direction: column; /* Stack .carousel-inner vertically */
+}
+
+/* Optional: Add a top section */
+.hero-top-section {
+    height: 20%; /* Takes a smaller top part */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-border); /* Changed from light-bg for better visibility */
+    padding: 1rem 0; /* Add some vertical padding for content */
+    /* Content for this section (e.g., a tagline or quick links) should be added in HTML.
+       Example: <p>Your tagline here</p> */
+    border-bottom: 1px solid #cdd5e0; /* Slightly darker border for better separation */
+}
+
+
+/* Hero Banner Carousel Styles (Replaces hero-sub-carousel) */
+.hero-banner-carousel .carousel-inner {
+    flex-grow: 1; /* Make .carousel-inner expand to fill the flex parent .hero-banner-carousel */
+    position: relative; /* Keep Bootstrap's positioning */
+    width: 100%;
+    overflow: hidden; /* Keep Bootstrap's overflow */
+}
+.hero-banner-carousel .carousel-item {
+    height: 100%; /* Ensure items take full height */
+    transition: transform 0.6s ease-in-out, opacity 0.5s ease-out; /* Faster, smoother transition (Bootstrap default speed) */
+    /* Bootstrap handles display: none for inactive, display: block for active by default */
+    position: relative; /* Needed for positioning child elements (image, overlay, content) */
+    /* REMOVED: background-size, background-position, background-repeat */
+}
+
+/* New styles for the image tag within a carousel slide */
+.carousel-slide-image {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers the slide without distortion */
+    z-index: 0;        /* Image is at the bottom of the stack */
+}
+
+/* New styles for the overlay div */
+.carousel-slide-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent overlay */
+    z-index: 1;        /* Overlay is on top of the image */
+}
+
+.hero-banner-carousel .carousel-item.active {
+    display: flex;    /* Make the ACTIVE item a flex container */
+    flex-direction: column;      /* Stack children vertically */
+    align-items: center;         /* Horizontally center children (e.g., the .container) */
+    justify-content: center;     /* Vertically center children (e.g., the .container) */
+}
+/* Ensure the .container inside .carousel-item also helps center its content */
+.hero-banner-carousel .carousel-item > .container { /* Base styles for .container inside any carousel-item */
+    padding-left: var(--bs-gutter-x, 0.75rem); /* Maintain Bootstrap container padding */
+    padding-right: var(--bs-gutter-x, 0.75rem);
+}
+
+.hero-banner-carousel .carousel-item.active > .container { /* Styles for .container specifically inside an ACTIVE item */
+    /* This container is now a flex item centered by its parent (.carousel-item.active).
+       It no longer needs to be a flex container itself for centering its own content,
+       nor does it need height: 100% for that purpose. */
+    width: 100%;             /* Ensures it can take up available width for Bootstrap's max-width to apply */
+    position: relative;      /* Keep for stacking context */
+    z-index: 2;              /* Content container is on top of the overlay */
+}
+.hero-carousel-slide-content {
+    color: var(--color-white); /* White text should still work well on the new gradient */
+    padding: 40px 20px; /* Adjusted padding: more vertical, less horizontal as .container handles that */
+    text-align: center; /* Center text within the slide content block */
+    max-width: 850px;   /* Max width for the content block */
+    opacity: 0; /* Start hidden for animation */
+    transform: translateY(20px); /* Start slightly lower for animation */
+    margin-left: auto; /* Ensure the block itself is centered if max-width is applied */
+    margin-right: auto; /* Ensure the block itself is centered if max-width is applied */
+}
+.hero-carousel-slide-content h5 {
+    font-family: var(--font-primary); /* Use primary font for less formal feel */
+    font-weight: 700; /* Bolder for more impact */
+    font-size: 3.2rem; /* Slightly larger for more emphasis */
+    line-height: 1.2; /* Adjusted line-height for large heading */
+    margin-bottom: 1.2rem; /* More space below heading */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4); /* Slightly stronger shadow for readability */
+    color: var(--color-white); /* Ensure heading text is white */
+}
+.hero-carousel-slide-content p {
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 0;
+    font-size: 1.5rem; /* Slightly larger paragraph text */
+    line-height: 1.6; /* Adjusted line-height for readability */
+}
+.hero-banner-carousel .carousel-indicators {
+    bottom: 30px; /* Position indicators higher for banners */
+}
+.hero-banner-carousel .carousel-indicators button {
+    background-color: rgba(255, 255, 255, 0.6); /* Slightly more opaque */
+    border-radius: 50%;
+    width: 12px; /* Slightly larger indicators */
+    height: 12px;
+    margin: 0 5px;
+}
+.hero-banner-carousel .carousel-indicators .active {
+    background-color: var(--color-white);
+}
+.hero-banner-carousel #heroMoodSearchInput {
+    background-color: rgba(255,255,255,0.9);
+    border: 1px solid rgba(255,255,255,0.7);
+    color: var(--color-dark-text);
+}
+.hero-banner-carousel #heroMoodSearchInput::placeholder {
+    color: var(--color-grey-text); /* Softer grey for placeholder */
+    opacity: 0.7; /* Standard opacity for placeholders */
+}
+.hero-banner-carousel #heroMoodSearchForm .btn-outline-light {
+    background-color: var(--color-primary-cyan); /* Brand color background */
+    border-color: var(--color-primary-cyan);     /* Brand color border */
+    color: var(--color-white);                   /* White text for contrast */
+}
+.hero-banner-carousel #heroMoodSearchForm .btn-outline-light:hover { /* Corrected selector */
+    background-color: #00a8bd; /* Darker cyan on hover */
+    border-color: #00a8bd;     /* Darker cyan border on hover */
+    color: var(--color-white);
+}
+
+/* Ensure the mood search form within hero content is centered and sized appropriately */
+.hero-carousel-slide-content #heroMoodSearchForm {
+    max-width: 700px; /* Adjust this width as needed for your form's appearance */
+    width: 100%;      /* Allow it to use space up to its max-width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-banner-carousel .carousel-control-prev, 
+.hero-banner-carousel .carousel-control-next {
+    width: 15%; /* Wider hit area for easier clicking */
+    z-index: 3; /* IMPORTANT: Ensure controls are on top of slide content (which has z-index: 2) */
+    opacity: 0.7; /* Make them visible by default but not too intrusive */
+    transition: opacity 0.3s ease;
+}
+
+.hero-banner-carousel .carousel-control-prev:hover,
+.hero-banner-carousel .carousel-control-next:hover {
+    opacity: 1; /* Fully visible on hover */
+}
+
+.hero-banner-carousel .carousel-control-prev-icon,
+.hero-banner-carousel .carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.4); /* Slightly darker background for better visibility */
+    border-radius: 50%; /* Circular background */
+    padding: 1.5rem; /* Make hit area larger */
+}
+
+/* Animation for hero slide content */
+@keyframes fadeInUpContent {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9); /* Start lower and slightly smaller for a "pop" */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.hero-banner-carousel .carousel-item.active .hero-carousel-slide-content {
+    animation: fadeInUpContent 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.1s forwards; /* Faster, more dynamic pop-in animation */
+    /* 0.6s duration, easeInOutExpo timing, 0.2s delay, forwards to keep end state */
+}
+
+/* Mood Discovery Section */
+.mood-discovery {
+    padding: 80px 0;
+    background-color: var(--color-light-bg);
+}
+.mood-discovery h2 {
+    margin-bottom: 1rem;
+}
+.mood-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjusted minmax */
+    gap: 30px;
+}
+.mood-card {
+    background-color: var(--color-white);
+    padding: 30px 25px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid transparent;
+}
+.mood-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-top-color: var(--color-primary-cyan);
+}
+.mood-icon {
+    font-size: 2.5rem;
+    color: var(--color-primary-cyan);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+.mood-card:hover .mood-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+.mood-card h3 {
+    color: var(--color-dark-text);
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+.mood-card p {
+    font-size: 0.9rem;
+    color: var(--color-grey-text);
+}
+
+/* Vibe Spotlight Section */
+.vibe-spotlight {
+    background-color: var(--color-primary-cyan); /* Changed to primary cyan */
+    padding: 80px 0;
+    color: var(--color-white); /* Default text color to white */
+}
+.spotlight-img {
+    border-radius: var(--border-radius);
+    max-height: 400px;
+    object-fit: cover;
+}
+.vibe-spotlight .badge {
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+    background-color: var(--color-accent1-pink) !important; /* Override Bootstrap default */
+}
+.vibe-spotlight h2 {
+    color: var(--color-white); /* Heading color to white */
+}
+.vibe-spotlight p, .vibe-spotlight .lead {
+    color: rgba(255,255,255,0.9); /* Slightly off-white for paragraphs */
+}
+.vibe-spotlight .btn-primary {
+    background-color: var(--color-accent1-pink); /* Button to accent pink */
+    border-color: var(--color-accent1-pink);
+    color: var(--color-white); /* Ensure text is white */
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    font-weight: bold;
+}
+.vibe-spotlight .btn-primary:hover {
+    background-color: #c2185b; /* Darker pink for hover */
+    border-color: #c2185b;
+    color: var(--color-white);
+}
+
+
+/* Featured Books Carousel */
+.featured-books {
+    padding: 80px 0;
+    background-color: var(--color-light-bg);
+    overflow-x: hidden; /* Prevent animations from causing horizontal scroll */
+}
+.book-card {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensure cards in a row are same height */
+    border: 1px solid var(--color-border); /* Add a subtle border */
+}
+.book-card:hover {
+    transform: translateY(-8px) scale(1.02); /* Add a slight scale up on hover */
+    box-shadow: var(--shadow-lg);
+}
+/* The rule for .book-card .card-img-top (around line 854) will now handle image styling.
+   We remove this older, more generic '.book-card img' rule that sets a fixed height. */
+/* .book-card:hover img { transform: scale(1.05); } */ /* Hover effect can be added to .card-img-top if desired */
+
+.book-info {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.book-info h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-dark-text);
+}
+.book-info p {
+    font-size: 0.9rem;
+    color: var(--color-grey-text);
+    margin-bottom: 1rem;
+}
+.buy-button {
+    background-color: var(--color-primary-cyan);
+    color: var(--color-white) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: var(--border-radius); /* Consistent border radius */
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    margin-top: auto; /* Pushes button to bottom */
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+}
+.buy-button:hover {
+    background-color: #00a8bd;
+    color: var(--color-white) !important;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--color-primary-cyan);
+    border-radius: 50%;
+    padding: 1.2rem; /* Make icon background larger */
+    background-size: 50% 50%;
+    pointer-events: auto; /* Clicks on the icon itself should work */
+    box-shadow: var(--shadow-md);
+    transition: background-color 0.3s ease;
+}
+.carousel-control-prev:hover .carousel-control-prev-icon,
+.carousel-control-next:hover .carousel-control-next-icon {
+    background-color: var(--color-accent1-pink); /* Change to accent pink on hover */
+}
+.carousel-control-prev, .carousel-control-next {
+    width: 15%; /* Use Bootstrap's default width for better reach on full-width carousels */
+    pointer-events: none; /* The button area ignores clicks */
+}
+
+
+
+/* Quote Section */
+.quote-section {
+    padding: 80px 20px;
+    background-color: var(--color-primary-cyan); /* Changed to solid primary cyan */
+    color: var(--color-white);
+}
+.quote-icon-open {
+    position: absolute;
+    top: -0.25em; /* Relative to icon's own font-size (fa-3x) */
+    left: -0.75em; /* Relative to icon's own font-size */
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 0; /* Override previous margin */
+    line-height: 1; /* Consistent positioning */
+}
+.quote-icon-close { /* Style for the closing quote icon */
+    position: absolute;
+    bottom: -0.25em; /* Relative to icon's own font-size */
+    right: -0.75em;  /* Relative to icon's own font-size */
+    color: rgba(255,255,255,0.5);
+    margin-top: 0;    /* Override previous margin */
+    margin-bottom: 0; /* Override previous margin */
+    display: inline;  /* Override previous display: block */
+    line-height: 1;   /* Consistent positioning */
+}
+
+.quote-section .quote-content-wrapper {
+    position: relative;
+    display: inline-block; /* Allows text-align:center from parent and sizes to content */
+    padding: 1rem;         /* Some padding for the text block itself */
+    /* Add margin to give space for offset icons, preventing overlap with section boundaries */
+    margin-top: 1.5rem; 
+    margin-bottom: 1.5rem;
+}
+.quote-section blockquote {
+    font-family: var(--font-headings);
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 0.5rem; /* Keep existing bottom margin */
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.quote-section cite {
+    font-size: 1rem;
+    font-style: normal;
+    display: block; /* Ensure cite is on its own line and respects centering */
+    opacity: 0.9;
+}
+#newQuoteBtn {
+    background-color: rgba(255,255,255,0.2);
+    border: 1px solid var(--color-white);
+    color: var(--color-white);
+    border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    transition: background-color 0.3s ease;
+}
+#newQuoteBtn:hover {
+    background-color: rgba(255,255,255,0.3);
+}
+
+/* Readers Voices (Testimonials) */
+.readers-voices {
+    background-color: var(--color-light-bg);
+}
+.testimonial-card {
+    background-color: var(--color-white);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    border-left: 5px solid var(--color-primary-cyan);
+}
+.testimonial-card::before { /* Quote icon */
+    content: "\f10d";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 15px;
+    left: -15px; /* Position over the border */
+    font-size: 1.8rem;
+    color: var(--color-primary-cyan);
+    background-color: var(--color-light-bg); /* Match section bg */
+    padding: 0 5px;
+    border-radius: 50%;
+}
+.testimonial-card p {
+    font-style: italic;
+    color: var(--color-grey-text);
+    margin-bottom: 1rem;
+}
+.testimonial-author {
+    font-weight: bold;
+    color: var(--color-dark-text);
+    text-align: right;
+}
+
+/* Featured Author Section */
+.featured-author {
+    background-color: var(--color-primary-cyan); /* Use primary cyan background */
+    color: var(--color-white); /* Default text color to white for contrast */
+}
+
+.featured-author .badge.bg-primary-cyan {
+    background-color: var(--color-accent1-pink) !important; /* Change badge to pink for contrast */
+    font-size: 0.9rem;
+    padding: 0.5em 1em;
+}
+
+.featured-author .author-img {
+    max-width: 250px; /* Control the size of the author image */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for hover effect */
+}
+
+.featured-author .author-img:hover {
+    transform: scale(1.05); /* Slightly enlarge the author's picture on hover */
+}
+
+.featured-author #author-name,
+.featured-author h5 {
+    color: var(--color-white); /* Ensure headings are white for contrast */
+}
+
+.featured-author #author-bio {
+    color: rgba(255, 255, 255, 0.9); /* Slightly off-white for bio text */
+}
+
+/* Update the button style for better contrast on the new cyan background */
+.featured-author .btn-primary {
+    background-color: var(--color-accent1-pink); /* Pink button for high contrast */
+    border-color: var(--color-accent1-pink);
+}
+.featured-author .btn-primary:hover {
+    background-color: #c2185b; /* Darker pink */
+    border-color: #c2185b;
+}
+
+/* Style the list items in the Featured Author section */
+.featured-author #author-books-container ul li {
+    margin-bottom: 0.5rem; /* Space between list items */
+}
+
+/* Style the links in the Featured Author section's list */
+.featured-author #author-books-container ul li a {
+    color: var(--color-white); /* Ensure the text color is white */
+    text-decoration: underline; /* Add underline for link appearance */
+    transition: color 0.3s ease; /* Smooth color transition for hover effect */
+}
+.featured-author #author-books-container ul li a:hover {
+    color: var(--color-light-bg); /* Light blue/white on hover for contrast */
+}
+
+/* CTA Join (Newsletter) */
+.cta-join {
+    padding: 80px 0; /* Padding remains the same */
+    background-color: var(--color-light-bg); /* Changed from white to light-bg */
+}
+.cta-join h2 {
+    margin-bottom: 0.5rem;
+}
+.cta-join .lead {
+    color: var(--color-grey-text);
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#newsletterForm .form-control-lg {
+    border-radius: 50px;
+    border-color: var(--color-border);
+    padding: 0.75rem 1.5rem;
+}
+#newsletterForm .form-control-lg:focus {
+    border-color: var(--color-primary-cyan);
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25);
+}
+.cta-button-alt { /* For newsletter submit */
+    background-color: var(--color-primary-cyan);
+    color: var(--color-white) !important;
+    padding: 0.75rem 1.8rem;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+}
+.cta-button-alt:hover {
+    background-color: #00a8bd;
+    transform: translateY(-2px);
+}
+#formMessage {
+    font-weight: 500;
+}
+
+.cta-join #formMessage.alert-success {
+    background-color: #e0f7fa; /* Light cyan */
+    border-color: var(--color-primary-cyan);
+    color: var(--color-primary-cyan);
+}
+
+.modal-header {
+    background-color: var(--color-light-bg);
+    border-bottom: 1px solid var(--color-border);
+    padding: 1.2rem 1.5rem;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+
+.modal-title {
+    font-family: var(--font-headings);
+    color: var(--color-dark-text);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Enhanced Modal Styles */
+.modal-content {
+    border-radius: 1rem; /* More pronounced rounded corners */
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Softer, larger shadow */
+    width: 90%;          /* Slightly wider modal */
+    max-width: 600px;    /* Adjust as needed */
+}
+
+.modal-header {
+    background-color: var(--color-primary-cyan); /* Use your brand color */
+    color: var(--color-white);                  /* White text */
+    border-bottom: none;                         /* Remove border */
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.list-group-item:nth-child(odd) { /* Alternate background color */
+    background-color: #f8f9fa;
+}
+
+.list-group-item {
+    border: none;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+}
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-image {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.cart-item-title {
+    color: var(--color-dark-text);
+    font-weight: 600;
+}
+
+.cart-item-quantity {
+    min-width: 2rem;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-outline-secondary { /* Style quantity buttons */
+    border-color: var(--color-border);
+    color: var(--color-grey-text);
+}
+.btn-outline-secondary:hover {
+    background-color: var(--color-light-bg);
+    border-color: var(--color-primary-cyan);
+    color: var(--color-primary-cyan);
+}
+
+.remove-from-cart-btn {
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: transparent; /* Make it transparent initially */
+    color: var(--color-grey-text);   /* Grey text */
+    border: 1px solid var(--color-border); /* Add a border */
+}
+.remove-from-cart-btn:hover {
+    background-color: #f9d9e0;  /* Lighter pink - a blend */
+    color: var(--color-accent1-pink);          /* Keep your pink for text */
+    border-color: #f9d9e0;    /* Slightly lighter pink border */
+}
+.remove-from-cart-btn:active, .remove-from-cart-btn:focus {  /* Add active/focus state */
+    background-color: transparent !important; /* Keep transparent */
+    color: var(--color-grey-text) !important;  /* Keep grey text */
+    border-color: var(--color-border) !important; /* Keep border color */
+}
+
+.modal-footer {
+    background-color: var(--color-white); /* White footer */
+    border-top: 1px solid var(--color-border);
+    padding: 1rem 1.5rem;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.modal-footer .cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-footer .text-end { /* Style the subtotal text */
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-dark-text);
+}
+
+.modal-footer .btn-primary {
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+    color: var(--color-white);
+    transition: background-color 0.3s ease;
+}
+.modal-footer .btn-primary:hover {
+    background-color: #00a8bd; /* Darker cyan on hover */
+    border-color: #00a8bd;
+}
+
+
+/* Footer */
+.main-footer {
+    background-color: var(--color-primary-cyan); /* Changed to primary cyan background */
+    color: var(--color-white);                   /* Default text color to white for contrast */
+    padding: 60px 0 30px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.2); /* Lighter border, or var(--color-white) if preferred */
+}
+
+.footer-logo {
+    display: inline-block;
+    font-family: var(--font-headings);
+    font-weight: 700;
+    font-size: 1.5rem; /* Smaller than header logo */
+    margin-bottom: 1.5rem; /* Space below the logo */
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+.footer-logo:hover {
+    transform: scale(1.05);
+}
+.footer-logo .logo-book {
+    color: var(--color-white);
+}
+.footer-logo .logo-book::first-letter {
+    font-size: 1.8rem; /* Proportionally smaller */
+}
+.footer-logo .logo-vibe {
+    color: var(--color-accent1-pink); /* Pink for contrast on cyan bg, matching the header */
+    font-size: 1.7rem;
+    animation: none; /* Disable breathing animation in footer */
+}
+.main-footer .footer-nav ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+.main-footer .footer-nav ul li {
+    display: inline;
+    margin: 0 12px;
+}
+.main-footer .footer-link {
+    color: var(--color-white); /* Link color to white */
+    font-size: 0.9rem;
+}
+/* Reinstating hover for footer links with white color and underline */
+.main-footer .footer-link:hover {
+    color: var(--color-white); /* White for hover on cyan background */
+    text-decoration: underline;
+}
+
+.social-links {
+    margin-bottom: 2rem; /* Increased space below social links */
+}
+.social-icon {
+    color: var(--color-white); /* Icon color to white */
+    font-size: 1.3rem;
+    margin: 0 10px;
+    transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease; /* Added text-shadow to transition */
+}
+.main-footer .social-icon:hover { /* Made selector more specific */
+    color: var(--color-light-bg); /* Light blue for hover, good contrast on cyan */
+    transform: scale(1.1); /* Made the scale a bit more "little" */
+    text-shadow: 0 0 8px var(--color-light-bg); /* Added a subtle glow effect */
+}
+.main-footer p { /* General style for paragraphs in footer */
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9); /* Lighter color for better contrast on cyan background */
+    margin-bottom: 0.75rem; /* Increased space below each paragraph line */
+}
+
+.main-footer .social-links + p { /* Specifically target the copyright line */
+    margin-bottom: 0.2rem; /* Reduce space after copyright line to group it with slogan */
+}
+
+/* Reinstating hover for footer links with white color and underline */
+.main-footer .footer-link:hover {
+    color: var(--color-white); /* White for hover on cyan background */
+    text-decoration: underline;
+}
+
+/* Style for the "Explore" button in book cards */
+.book-card .btn-primary {
+    background-color: var(--color-primary-cyan);
+    color: var(--color-white);
+    border: none; /* Remove border */
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.book-card .btn-primary:hover {
+    background-color: var(--color-accent1-pink);
+}
+
+/* Style for the "Add to Cart" button on the book-details page */
+#book-details .btn-primary {
+    background-color: var(--color-primary-cyan);
+    color: var(--color-white);
+    border: none;
+    transition: background-color 0.3s ease;
+}
+#book-details .btn-primary:hover {
+    background-color: var(--color-accent1-pink);
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .hero h1 { font-size: 2.8rem; }
+    .hero .lead { font-size: 1.15rem; }
+    /* .mood-grid adjustment already made in main styles for consistency */
+    /* Removed fixed height for .book-card img to rely on .card-img-top aspect-ratio styling */
+    .quote-section blockquote { font-size: 1.6rem; }
+}
+
+@media (max-width: 768px) {
+    .main-header .navbar-nav { margin-top: 1rem; }
+    .main-header .d-flex { margin-top: 1rem; width: 100%; } /* Search form full width */
+    .hero {
+        min-height: auto;
+        padding: 60px 20px; /* Adjusted padding */
+    }
+    .hero-top-section {
+        height: auto; /* Override percentage height */
+        min-height: 60px; /* Ensure some space */
+    }
+    .hero-banner-carousel {
+        height: auto; /* Let content define height, or set a min-height */
+        min-height: 300px; /* Example: ensure carousel is reasonably tall */
+    }
+    .hero h1 { font-size: 2.3rem; }
+    .vibe-spotlight .spotlight-img { margin-bottom: 2rem; }
+    .mood-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .testimonial-card::before { display: none; } /* Hide pseudo element if layout breaks */
+}
+
+@media (max-width: 576px) {
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.8rem; }
+    .mood-grid { grid-template-columns: 1fr; } /* Stack mood cards */
+    .book-card { margin-bottom: 2rem; } /* Ensure spacing when carousel items stack */
+    #newsletterForm .col-md-5 { margin-bottom: 1rem; } /* Stack newsletter input and button */
+    .main-footer .footer-nav ul li { display: block; margin: 8px 0; } /* Stack footer links */
+}
+
+/* Toast Notification Styles */
+.toast-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--color-dark-text);
+    color: var(--color-white);
+    padding: 15px 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 1050; /* Ensure it's above most other content */
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.toast-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-notification.error {
+    background-color: var(--color-accent1-pink); /* Or your preferred error color */
+}
+/* Optional: Styles for book-details.html */
+#book-details img {
+  max-width: 300px; /* Further reduced max-width */
+  height: auto;
+  display: block; /* Helps with centering if margin auto is used */
+  margin-left: auto; /* Center image if column is wider */
+  margin-right: auto; /* Center image if column is wider */
+    /* max-width: 300px; Further reduced max-width */ /* Restore max-width 300px; */
+}
+
+#book-details h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem; /* Further reduced title size */
+  /* font-size: 2rem;  Further reduced title size  */ /* Restore font-size 2rem */
+}
+
+#book-details #book-author {
+    font-size: 1.05rem; /* Further reduced author text size */
+    color: var(--color-grey-text);
+    margin-bottom: 1rem;
+}
+
+#book-details #book-description {
+    font-size: 0.95rem; /* Slightly smaller description text */
+    line-height: 1.7;
+}
+
+.book-card {
+    /* Existing styles */
+    /* ... */
+
+    /* Enhanced styles */
+    border: none; /* Remove default border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.book-card:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.book-card .book-info {
+    /* Existing styles */
+    /* ... */
+    padding: 1.5rem; /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute content vertically */
+}
+
+.book-card .book-info h3 {
+    /* Existing styles */
+    /* ... */
+    font-size: 1.25rem; /* Slightly larger title */
+    margin-bottom: 0.75rem;
+}
+
+.book-card .book-info p {
+    /* Existing styles */
+    /* ... */
+    font-size: 1rem; /* Slightly larger text */
+    color: var(--color-grey-text);
+}
+
+.book-card .btn-primary {
+    /* Existing styles for your primary button */
+    /* ... */
+    align-self: flex-start; /* Align button to the start */
+}
+
+/* Optional: Add a background color or gradient to the book info area */
+/*
+.book-card .book-info {
+    background-color: #f8f9fa;  
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+*/
+
+/* Genres Page Styles */
+.genre-card-item {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-top-color 0.3s ease;
+    border-top: 4px solid transparent; /* For hover effect */
+    cursor: pointer;
+}
+
+.genre-card-item:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-top-color: var(--color-accent1-pink); 
+}
+
+/* This rule is also superseded by the .book-card .card-img-top rule (around line 854)
+   to avoid fixed heights and allow for better aspect ratio control. */
+
+.book-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allows content to fill the card, pushing button to the bottom */
+}
+
+.book-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+}
+
+.book-info p {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.book-price {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Button within card */
+.book-info .btn {
+    margin-top: auto; /* Pushes button to the bottom */
+    align-self: flex-start; /* Align to the start if needed */
+}
+
+/* Styles for genre cards on genres.html (moved here for better organization) */
+.genre-card-item .card-title {
+    color: var(--color-dark-text);
+    font-size: 1.25rem; /* Slightly adjusted size */
+}
+.genre-card-item i {
+    color: var(--color-primary-cyan); /* Default icon color */
+}
+
+/* Specific to Genre/Mood Pages (Adapt existing section styles) */
+#genre-specific-books-page,
+#mood-specific-books-page {
+    padding-top: 20px; /* Adjust as needed */
+}
+
+#genre-page-title,
+#mood-page-title,
+#search-page-title,
+#wishlist-page-title {
+    font-family: var(--font-headings); /* Ensure heading font is used */
+    font-size: 2.7rem; /* Slightly larger and more impactful */
+    font-weight: 300;  /* Lighter weight for the static part like "Books in" */
+    color: var(--color-grey-text); /* Softer color for the static part, e.g., "Search Results for" */
+    letter-spacing: 0.03em; /* Adds a touch of elegance */
+    padding-bottom: 0.6rem; /* Adjust spacing for the underline */
+    border-bottom: 3px solid var(--color-primary-cyan); /* Cyan underline accent */
+    display: inline-block; /* To make border-bottom only span the text width */
+    margin-bottom: 1.2rem; /* More space below the title */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.05); /* Very subtle shadow for overall polish */
+    line-height: 1.3; /* Adjust line height for better readability */
+}
+
+/* Style for the highlighted (genre/mood name) part of the title */
+#genre-page-title .highlight-text,
+#mood-page-title .highlight-text,
+#search-page-title .highlight-text,
+#wishlist-page-title .highlight-text { /* Wishlist doesn't have a highlight, but good for consistency */
+    font-weight: 700; /* Bolder for the actual genre/mood name */
+    color: var(--color-accent1-pink); /* Accent Pink color */
+    font-style: normal; /* Removing italic for a cleaner, stronger look */
+}
+
+/* Styling for "Back to..." links on genre, mood, and search pages */
+#genre-specific-books-page .text-muted a,
+#mood-specific-books-page .text-muted a,
+#search-results-page .text-muted a { /* Add search page back link here */
+    color: var(--color-primary-cyan); /* Cyan color for the link */
+    text-decoration: underline;     /* Underline the link */
+    font-weight: 500;               /* Slightly bolder */
+    transition: color 0.2s ease-in-out, text-decoration-color 0.2s ease-in-out;
+}
+
+#genre-specific-books-page .text-muted a:hover,
+#mood-specific-books-page .text-muted a:hover,
+#search-results-page .text-muted a:hover { /* Add search page back link hover here */
+    color: var(--color-accent1-pink);  /* Change to accent pink on hover */
+    text-decoration-color: var(--color-accent1-pink); /* Change underline color on hover */
+}
+
+/* To ensure the title is centered after making it inline-block */
+#genre-specific-books-page .text-center > #genre-page-title,
+#mood-specific-books-page .text-center > #mood-page-title,
+#search-results-page .text-center > #search-page-title,
+#wishlist-page .text-center > #wishlist-page-title { /* Add wishlist page title centering here */
+    display: inline-block; /* Keeps the border neat */
+    /* The parent .text-center will handle the centering */
+}
+
+/* Wishlist Page Specific Styles */
+#empty-wishlist-message {
+    /* Removed flexbox properties as text-center and Bootstrap's grid will handle centering */
+}
+#empty-wishlist-message .fa-heart-broken { /* Keep this rule for styling the icon */
+    /* font-size: 4rem; */ /* This will be overridden by fa-5x in HTML, but keeping for clarity */
+    margin-bottom: 1.5rem;
+    color: var(--color-grey-text); /* Changed for better visibility; var(--color-border) can be very light */
+    /* If the icon isn't centering correctly with text-align on parent, you can make it a block: */
+    /* display: block; */
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+}
+#empty-wishlist-message .lead {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-dark-text); /* Explicitly set color for better readability */
+    font-weight: 500; /* Make the lead text a bit more prominent */
+}
+
+/* Optional: If you have additional descriptive text (not the .lead paragraph) */
+#empty-wishlist-message p:not(.lead) {
+    color: var(--color-grey-text);
+    margin-bottom: 2rem; /* Space it out before a potential button */
+    max-width: 600px; /* Optional: constrain width for readability if text is long */
+    margin-left: auto; /* Centers the block if max-width is applied */
+    margin-right: auto; /* Centers the block if max-width is applied */
+}
+
+/* Styling for a call-to-action button, e.g., "Explore Books" */
+#empty-wishlist-message .btn.btn-primary { /* Be more specific if using Bootstrap's .btn */
+    margin-top: 1rem; /* Add some space above the button */
+    background-color: var(--color-accent1-pink); /* Change to pink accent color */
+    border-color: var(--color-accent1-pink);     /* Match border color */
+    color: var(--color-white);                   /* Ensure text is white for contrast */
+}
+
+#empty-wishlist-message .btn.btn-primary:hover {
+    background-color: #c2185b; /* Darker pink for hover, consistent with other pink buttons */
+    border-color: #c2185b;
+    color: var(--color-white); /* Ensure text remains white on hover */
+}
+
+/* Wishlist Button Styles */
+.wishlist-btn {
+    background-color: transparent;
+    border: none; /* Completely remove border by default */
+    padding: 0.3rem 0.6rem; /* Smaller padding for icon button */
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-size: 0.9rem; /* Adjust icon size if needed */
+    line-height: 1; /* Ensure icon is centered vertically */
+    position: relative; /* For icon positioning if needed */
+    z-index: 5; /* Lower default, card-specific will be higher */
+}
+
+/* Remove default browser focus outline for the wishlist button */
+.wishlist-btn:focus,
+.wishlist-btn:focus-visible, /* For modern browser accessibility focus indicators */
+.wishlist-btn .fas.fa-heart:focus { /* Also target icon focus, though less likely to get outline */
+    outline: none !important; /* More forceful removal */
+    box-shadow: none; /* Also remove any default box-shadow on focus if present */
+}
+
+/* Icon styling - always fas fa-heart, appearance controlled by .active and :hover */
+.wishlist-btn .fas.fa-heart {
+    color: var(--color-grey-text); /* Default grey color for inactive heart */
+    font-size: 1.3rem; /* Increased icon size - adjust as needed (e.g., 1.2rem, 1.4rem) */
+    transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    display: inline-block; /* Needed for transform */
+}
+
+/* INACTIVE button hover state */
+.wishlist-btn:not(.active):hover .fas.fa-heart {
+    /* color: var(--color-accent1-pink); */ /* REMOVED: No color change on hover for inactive heart */
+}
+.wishlist-btn:not(.active):hover { /* Button border also changes on hover */
+    /* border-color: var(--color-accent1-pink); */ /* No border change on hover for inactive */
+    /* Optional: subtle background on hover for inactive button */
+    /* background-color: var(--color-light-bg); */
+}
+
+/* ACTIVE button state */
+.wishlist-btn.active {
+    /* border-color: var(--color-accent1-pink); */ /* No border for active button either, if desired */
+    border-color: transparent; /* Or keep transparent if you want no border ever */
+}
+.wishlist-btn.active .fas.fa-heart { /* Targets the filled heart icon specifically */
+    color: var(--color-accent1-pink) !important; /* Pink filled heart */
+}
+
+/* ACTIVE button hover state (optional darker pink for heart) */
+.wishlist-btn.active:hover .fas.fa-heart {
+    color: #c2185b !important; /* Darker pink heart on hover for active button */
+}
+.wishlist-btn.active:hover {
+    /* Optional: subtle background on hover for active button */
+    /* background-color: rgba(233, 30, 99, 0.05); */
+}
+
+/* Heart Pop Animation */
+@keyframes heartPopSimple {
+    0% {
+        transform: scale(1);
+    }
+    50% { /* Pop out */
+        transform: scale(1.4); /* Adjust scale factor as desired */
+    }
+    100% { /* Back to normal */
+        transform: scale(1);
+    }
+}
+
+/* Class to trigger animation on the icon within the button */
+.wishlist-btn.heart-pop-animation .fas.fa-heart {
+    animation: heartPopSimple 0.3s ease-in-out; /* Simpler animation, shorter duration */
+}
+
+/* Ensure wishlist buttons on cards are definitively on top */
+.book-card .wishlist-btn.wishlist-btn-card {
+    position: relative; /* Reinforce stacking context */
+    z-index: 20;      /* Higher z-index than default carousel controls (z-index: 1) */
+}
+
+/* Styles for wishlist button on book-details page */
+.book-image-container {
+    position: relative; /* Establishes a positioning context for the button */
+}
+
+.wishlist-btn-details-page {
+    position: absolute;
+    top: 10px;  /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    z-index: 10; /* Ensure it's above the image */
+    background-color: rgba(255, 255, 255, 0.7); /* Slight background for visibility */
+    border-radius: 50%; /* Make it circular */
+    padding: 0.5rem; /* Adjust padding for a good size */
+    box-shadow: var(--shadow-sm);
+}
+
+.wishlist-btn-details-page .fas.fa-heart {
+    font-size: 1.5rem; /* Make icon a bit larger for details page */
+}
+/* Ensure wishlist card buttons are styled consistently if needed */
+/* Styles for buttons on the Wishlist Page (wishlist.html) */
+#wishlist-page .book-card .btn-outline-primary { /* For "View Details" */
+    border-color: var(--color-primary-cyan);
+    color: var(--color-primary-cyan);
+    background-color: transparent; /* Ensure it starts as an outline button */
+}
+#wishlist-page .book-card .btn-outline-primary:hover {
+    background-color: var(--color-primary-cyan);
+    color: var(--color-white);
+}
+
+/* Targets the "Remove" button on wishlist page */
+#wishlist-page .book-card .wishlist-remove-btn.btn-outline-danger {
+    border-color: var(--color-accent1-pink);
+    color: var(--color-accent1-pink);
+    background-color: transparent; /* Ensure it starts as an outline button */
+}
+#wishlist-page .book-card .wishlist-remove-btn.btn-outline-danger:hover {
+    background-color: var(--color-accent1-pink);
+    color: var(--color-white);
+}
+
+.wishlist-add-to-cart-btn, .wishlist-remove-btn {
+    font-size: 0.85rem; /* Slightly smaller text for these buttons */
+    padding: 0.4rem 0.8rem;
+}
+
+/* Profile Page Styles */
+.profile-page-content {
+    background-color: var(--color-light-bg); /* Light background for the content area */
+    min-height: 70vh; /* Ensure it takes up some space */
+}
+
+#profile-page-title { /* Re-using existing title style for consistency */
+    font-family: var(--font-headings);
+    font-size: 2.7rem;
+    font-weight: 300;
+    color: var(--color-grey-text);
+    letter-spacing: 0.03em;
+    padding-bottom: 0.6rem;
+    border-bottom: 3px solid var(--color-primary-cyan);
+    display: inline-block;
+    margin-bottom: 0.5rem; /* Reduced margin for profile page title */
+}
+
+.profile-sidebar .nav-pills .nav-link {
+    color: var(--color-dark-text);
+    margin-bottom: 0.5rem;
+    border: 1px solid transparent;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.profile-sidebar .nav-pills .nav-link.active,
+.profile-sidebar .nav-pills .nav-link:hover {
+    color: var(--color-white);
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+}
+.profile-sidebar .nav-pills .nav-link.text-danger:hover {
+    background-color: var(--color-accent1-pink);
+    color: var(--color-white) !important; /* Ensure text remains white */
+}
+
+/* Surprise Me Button in Navbar */
+.navbar-nav .nav-link.btn-surprise {
+    color: var(--color-accent1-pink);
+    border: 1px solid var(--color-accent1-pink);
+    padding: 0.3rem 0.7rem; 
+    margin-left: 0.5rem; /* Spacing from other items */
+    border-radius: 50px; /* Pill shape */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    text-decoration: none; /* Ensure no underline by default */
+}
+.navbar-nav .nav-link.btn-surprise:hover {
+    background-color: var(--color-accent1-pink);
+    color: var(--color-white);
+    transform: scale(1.05) rotate(2deg); /* Slight playful rotation */
+}
+.navbar-nav .nav-link.btn-surprise i {
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy rotation */
+}
+.navbar-nav .nav-link.btn-surprise:hover i {
+    transform: rotate(360deg);
+}
+
+/* Profile Page Specific Styles from new layout */
+.navbar-nav #cartLink:hover {
+    text-decoration: none; /* Remove underline specifically for cart link on hover */
+}
+
+/* Profile Page Specific Styles from new layout */
+.profile-page-content {
+    background-color: var(--color-light-bg); /* Light background for the content area */
+    min-height: 80vh; /* Ensure it takes up good space */
+}
+
+.profile-sidebar .card-body { /* Styles for the card body within the sidebar */
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+.profile-picture-container {
+    position: relative;
+    width: 100px; /* Further reduced width */
+    height: 100px; /* Further reduced height */
+    margin: 0 auto 1rem auto; /* Center it and add bottom margin */
+    cursor: pointer; /* Indicate it's interactive */
+}
+
+.profile-pic-main { /* The main profile image */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure image covers the area, cropping if necessary */
+    box-shadow: var(--shadow-md); /* Add a medium shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture-container:hover .profile-pic-main {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: var(--shadow-lg); /* Larger shadow on hover */
+}
+
+.profile-pic-edit-icon { /* The camera icon for editing */
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: rgba(0, 207, 232, 0.85); /* Slightly more transparent */
+    color: var(--color-white);
+    width: 28px;  /* Further reduced icon size */
+    height: 28px; /* Further reduced icon size */
+    border-radius: 50%; /* Make it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem; /* Adjusted font size for smaller icon */
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-pic-edit-icon:hover {
+    background-color: var(--color-accent1-pink); /* Change color on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.profile-sidebar .list-group-item { /* Styling for navigation links in sidebar */
+    border-radius: 0; /* Remove default Bootstrap radius */
+    border-left: 3px solid transparent; /* For active/hover indicator */
+    transition: background-color 0.2s ease, border-left-color 0.2s ease, color 0.2s ease;
+    padding: 0.9rem 1.25rem;
+    font-weight: 500; /* Medium font weight */
+}
+
+.profile-sidebar .list-group-item.active,
+.profile-sidebar .list-group-item:hover {
+    background-color: #e0f7fa; /* Lighter cyan (var(--color-primary-cyan-light) if defined) */
+    color: var(--color-primary-cyan);
+    border-left-color: var(--color-primary-cyan);
+}
+
+.profile-sidebar .list-group-item.active i, /* Icon color for active/hover state */
+.profile-sidebar .list-group-item:hover i {
+    color: var(--color-primary-cyan);
+}
+
+.profile-sidebar .list-group-item.text-danger:hover { /* Specific hover for logout */
+    background-color: rgba(233, 30, 99, 0.1); /* Light pink */
+    color: var(--color-accent1-pink) !important;
+    border-left-color: var(--color-accent1-pink);
+}
+
+.profile-content-tabs.card { /* The main content area card */
+    border: none; /* Remove card border if sidebar has one, for cleaner look */
+}
+
+.tab-section-title { /* Titles within each tab like "Edit Your Profile" */
+    font-family: var(--font-headings);
+    color: var(--color-primary-cyan);
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem !important; /* Ensure consistent bottom margin */
+}
+
+/* Profile Page Save Button */
+.profile-save-btn {
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+    color: var(--color-white); /* Ensure text is white for good contrast */
+    min-width: 150px; /* Give button some base width */
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+.profile-save-btn:hover {
+    background-color: #00a8bd; /* Darker cyan on hover */
+    border-color: #00a8bd;     /* Darker cyan border on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+.profile-save-btn .fa-spinner {
+    /* CSS for spin is handled by Font Awesome's fa-spin class */
+}
+.profile-save-btn .fa-check-circle {
+    color: var(--color-white); /* Change to white to match button text */
+}
+
+/* Profile Page - Vibe Stats Card */
+.stat-card {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem 1rem; /* Adjusted padding */
+}
+.stat-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: var(--shadow-md); /* Slightly stronger shadow on hover */
+}
+.stat-card .stat-value { /* For numeric animated values */
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-dark-text);
+}
+.stat-card .stat-value-text { /* For non-numeric stat values like "Sci-Fi" */
+    font-size: 1.8rem; /* Adjust as needed */
+    font-weight: 600;
+    color: var(--color-dark-text);
+    margin-bottom: 0.25rem; /* Align with numeric stat values if they have different line-heights */
+}
+.stat-card .stat-label { /* The "Books Read" text */
+    font-size: 0.9rem;
+}
+.stat-card .text-primary-cyan {
+    color: var(--color-primary-cyan);
+}
+.stat-card .text-accent1-pink {
+    color: var(--color-accent1-pink);
+}
+
+/* Skeleton Loader Styles */
+.skeleton-card {
+    background-color: var(--color-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm); /* Use a lighter shadow for skeletons */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.skeleton {
+    background-color: var(--color-border); /* Use theme color for consistency */
+    border-radius: 4px;
+    animation: skeleton-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes skeleton-pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+.skeleton-card .skeleton-img { width: 100%; aspect-ratio: 2 / 3; /* Match book card image aspect ratio */ }
+.skeleton-card .skeleton-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+.skeleton-card .skeleton-title { height: 1.15rem; width: 80%; margin-bottom: 0.75rem; }
+.skeleton-card .skeleton-text { height: 0.9rem; width: 50%; margin-bottom: 1rem; }
+.skeleton-card .skeleton-button { height: 38px; width: 100px; margin-top: auto; align-self: flex-start; border-radius: var(--border-radius); }
+
+/* Profile Page - Settings Tab Enhancements */
+#settingsForm .form-check-label {
+    color: var(--color-dark-text);
+ } /* Ensure labels use the theme's dark text color
+}
+#settingsForm .form-check-input:checked {
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+}
+
+/* Override default blue focus ring on toggle switches */
+#settingsForm .form-check-input:focus {
+    border-color: var(--color-primary-cyan);
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25);
+}
+
+/* Style dropdowns to match theme */
+#settingsForm .form-select {
+    border-color: var(--color-border); /* Use theme's default border color */
+}
+
+#settingsForm .form-select:focus {
+    border-color: var(--color-primary-cyan);
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25); /* Use theme's cyan for focus ring */
+}
+
+/* Book Details Page Enhancements */
+.star-rating {
+    color: #FFD700; /* Gold color for stars */
+    font-size: 1.2rem; /* Adjust star size */
+}
+
+.star-rating .fas.fa-star,
+.star-rating .fas.fa-star-half-alt {
+    margin-right: 2px;
+}
+
+.star-rating .far.fa-star { /* Empty star */
+    color: #ccc; /* Light grey for empty stars */
+}
+
+.stock-status {
+    font-weight: bold;
+}
+
+.stock-status.in-stock {
+    color: #28a745; /* Green for in stock */
+}
+
+.stock-status.out-of-stock {
+    color: #dc3545; /* Red for out of stock */
+}
+
+/* Price styling on the book details page, similar to bestseller cards but appropriately sized */
+#book-details .book-price { /* Targets the <p class="book-price"> within #book-details */
+    font-size: 1.5rem;    /* Further reduced price font size */
+    font-weight: bold;    /* Matching bestseller card's font-weight */
+    color: #333;          /* Dark grey, consistent with .book-price in cards */
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+}
+#checkout-page .card {
+    border: 1px solid var(--color-border);
+}
+
+#checkout-page .card-title {
+    color: var(--color-primary-cyan);
+}
+
+#checkoutOrderSummary .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+    border-bottom: 1px solid var(--color-border);
+}
+ #checkoutOrderSummary .list-group-item:last-child {
+    border-bottom: none;
+}
+/* Styling for other details like genre, publication date on book-details page */
+#book-details .text-muted { /* Assuming genre, pub date might use text-muted */
+    font-size: 1rem; /* Ensure these are not too small */
+}
+
+
+
+/* Ensure the "Place Order" button on checkout page uses primary cyan */
+#checkout-page .btn-primary {
+    background-color: var(--color-primary-cyan) !important; /* Ensure cyan override */
+    border-color: var(--color-primary-cyan) !important;     /* Ensure cyan override */
+    color: var(--color-white) !important;                   /* Ensure white text */
+}
+#checkout-page .btn-primary:hover {
+    background-color: #00a8bd !important; /* Darker cyan on hover, ensure override */
+    border-color: #00a8bd !important;     /* Darker cyan border on hover, ensure override */
+    color: var(--color-white) !important; /* Ensure text remains white */
+}
+
+/* Style for "Shop This Book" button on book-details.html to be pink */
+#book-details #details-shop-btn {
+    background-color: var(--color-accent1-pink);
+    border-color: var(--color-accent1-pink);
+    color: var(--color-white);
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+#book-details #details-shop-btn:hover {
+    background-color: #c2185b; /* Darker pink for hover */
+    border-color: #c2185b;
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+
+/* Contact Page Form Styling */
+#contact-page .form-label {
+    color: var(--color-dark-text);
+    font-weight: 500; /* Slightly bolder labels */
+}
+
+#contact-page .form-control {
+    border-color: var(--color-border);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#contact-page .form-control:focus {
+    border-color: var(--color-primary-cyan);
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25); /* Cyan focus glow */
+}
+/* Customize checkbox and radio button colors */
+#settingsForm .form-check-input:checked {
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+}
+
+#settingsForm .form-check-input:focus {
+    border-color: var(--color-primary-cyan);
+    box-shadow: 0 0 0 0.2rem rgba(0, 207, 232, 0.25);
+}
+#settingsForm .form-check-input:checked[type="radio"] {
+    border-radius: 50%; /* Keep radio buttons rounded */
+}
+
+#contact-page .btn-primary {
+    background-color: var(--color-primary-cyan);
+    border-color: var(--color-primary-cyan);
+    color: var(--color-white);
+    padding: 0.6rem 1.5rem; /* Consistent padding */
+}
+
+#contact-page .btn-primary:hover {
+    background-color: #00a8bd; /* Darker cyan for hover */
+    border-color: #00a8bd;
+}
+/* In your style.css (or equivalent custom CSS file) */
+
+/* ... other styles ... */
+
+/* Add these towards the end */
+.book-card .card-img-top {
+  width: 100%; /* Image takes full width of its container in the card */
+  /* Option 1: Use aspect-ratio for a consistent book cover shape (Recommended) */
+  aspect-ratio: 2 / 3; /* This defines the SHAPE of the image area. */
+  object-fit: contain; /* This makes the ENTIRE image visible within the 2:3 area, potentially adding empty space. */
+
+  /* Option 2: Let the image's natural height dictate (Uncomment if preferred over aspect-ratio) */
+  /* height: auto; */
+  /* object-fit: cover; */ /* If using height: auto, 'cover' can still be useful if card has varying widths. */
+
+  max-height: 380px; /* Slightly increased max-height. Adjust as needed or remove if not necessary. */
+  transition: transform 0.3s ease; /* For hover effect */
+}
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  /* Potentially other styles for the card itself */
+}
+.book-card:hover .card-img-top { /* Apply hover effect to the image */
+    transform: scale(1.05);
+}
+
+/* Order History Accordion on Profile Page */
+.accordion-button {
+    background-color: #f8f9fa; /* Light grey background for header */
+    color: var(--color-dark-text);
+    font-size: 0.95rem; /* Slightly smaller font for header */
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #eefbff; /* Very light cyan when open */
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+    color: var(--color-primary-cyan);
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 207, 232, 0.25); /* Cyan focus ring */
+}
+
+.order-header-item {
+    font-size: 0.9rem;
+}
+
+.order-item-title:hover {
+    color: var(--color-primary-cyan) !important;
+    text-decoration: underline !important;
+}
+
+/* Cart Page Styles */
+#cart-page-title {
+    font-family: var(--font-headings);
+    font-size: 2.7rem;
+    font-weight: 300;
+    color: var(--color-grey-text);
+    border-bottom: 3px solid var(--color-primary-cyan);
+    display: inline-block;
+    padding-bottom: 0.6rem;
+}
+
+.cart-items-card .card-header, .summary-card .card-header {
+    border-bottom: 2px solid var(--color-border);
+}
+
+.cart-page-item-img {
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+}
+
+.cart-item-title-link {
+    font-size: 1.05rem;
+}
+.cart-item-title-link:hover {
+    color: var(--color-primary-cyan) !important;
+    text-decoration: underline !important;
+}
+
+.cart-quantity-controls .form-control {
+    max-width: 45px;
+}
+
+.remove-from-cart-link {
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+.remove-from-cart-link:hover {
+    color: #a5122a !important; /* Darker red on hover */
+}
+
+/* SPACING BETWEEN NAV LINKS */
+.navbar-nav .nav-item {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+#book-details img {
+  max-width: 300px; /* Further reduced max-width */
+  height: auto;
+  display: block; /* Helps with centering if margin auto is used */
+  margin-left: auto; /* Center image if column is wider */
+  margin-right: auto; /* Center image if column is wider */
+}
+#book-details h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem; /* Further reduced title size */
+}
+#backToTopBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Ensure it's on top of other content */
+}
